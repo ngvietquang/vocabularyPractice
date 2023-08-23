@@ -1,0 +1,45 @@
+{% extends 'base.html'%}
+{% block content %}
+<div class="container">
+    <h3 >COUNTDOWN: </h3>
+    <h3 id="number"></h3>
+    <h3 id = 'wordsToTranslate'></h3>
+    <button type="button" class="btn btn-outline-secondary">Reading <i class="fa-solid fa-volume-high"></i></button>
+    <form action="">
+      <div class="form-group row" >
+        <div class="col-sm-12">
+          <input class="form-input form-control " >
+        </div>
+      </div>
+      <button type="button" id ='next' class="btn btn-outline-success btn-lg">Next</button>
+      <button type="button" id='check' class="btn btn-outline-info btn-lg">Check</button>
+    </form>
+    <script >
+      // CountDown
+      const number= 20
+      let count = number
+      function countdown(){
+          document.getElementById('number').innerHTML = count
+          count--
+          if (count < 0){
+              clearInterval(interval)
+          }
+      }
+      countdown()
+      const interval = setInterval(countdown,1000)
+
+
+      // NEXT WORD
+      function nextWord(){
+        let englishWord = "{{current_english_word}}"
+        let vietnamWord = '{{current_vietnam_word}}'
+
+        document.getElementById('wordsToTranslate').innerHTML = vietnamWord
+      }
+      
+      let nextButton = document.getElementById('next')
+      nextButton.addEventListener('click',function(){
+        nextWord()
+      })
+  </script>
+{% endblock %}

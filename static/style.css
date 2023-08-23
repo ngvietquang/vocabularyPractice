@@ -1,0 +1,58 @@
+body{
+    width: 100%;
+    background-color: #8BE8E5;
+}
+.container {
+    background-color: white;
+    margin-top: 6%;
+    text-align: center;
+    padding: 45px; 
+    border-radius: 10px;
+    
+}
+
+.container-add{
+    background: white;
+    margin: 5% 25%;
+    padding: 100px;
+    border-radius: 10px;
+}
+
+/* Font */
+h3{
+    font-family: 'Playfair Display', serif;
+    
+
+}
+h2{
+    font-family: 'Playfair Display', serif;
+    text-align: center;
+    margin-bottom: 2%;
+    padding-bottom: 2%;
+
+}
+
+/* button */
+
+.btn{
+    margin: 2% 15%;
+}
+
+
+
+.btn1{
+    margin-top: 1%;
+    position: absolute;
+    
+}
+/* input */
+.form-input{
+    width: 60%;
+    position: relative;
+    left: 20%;
+}
+
+.form-control{
+    margin: 1% 0;
+   
+}
