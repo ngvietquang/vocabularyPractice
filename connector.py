@@ -1,26 +1,7 @@
 import mysql.connector
 import pandas, json
 import random
-# data = pandas.read_csv('data.csv')
-# get data in row
-# to_learn = data.to_dict(orient='records')
-
-
-#____________GET DATA________
-# all_words = []
-
-# tuple_list = []
-
-# for num in range(len(to_learn)):
-#     tuple_list = (to_learn[num]['English'], to_learn[num]['Tiếng Việt'])
-#     all_words.append(tuple_list)
-
-#________ MySQL Connector_____
-
-    
-    
-
-
+# ________ MySQL Connector_____
 class MySQL():
     def __init__(self):
         self.mydb = mysql.connector.connect(
@@ -32,16 +13,58 @@ class MySQL():
         self.mycursor = self.mydb.cursor()
     # Return Value As Tuple
     def get_data(self):
-        self.mycursor.execute('SELECT english,vietnamses FROM vocabulary')
+        self.mycursor.execute('SELECT * FROM vocabulary')
         my_result = self.mycursor.fetchall()
-        random.shuffle(my_result)
         return my_result
-    def max_id(self):
-        self.mycursor.execute(f'SELECT id FROM vocabulary ORDER BY id DESC')
-        my_result = int(self.mycursor.fetchone()[0])
-        return my_result
+    def data_condition(self,fromNum,toNum):
+        self.mycursor.execute(f'SELECT * FROM vocabulary WHERE id BETWEEN {fromNum} AND {toNum}')
+        my_result = self.mycursor.fetchall()
+        return my_result    
+    def add(self,eng,viet):
+        sql = "INSERT INTO vocabulary (english,vietnamses) VALUES (%s,%s)"
+        val = (eng,viet)
+        self.mycursor.execute(sql,val)
+        self.mydb.commit()
+    def delete(self,id):
+        sql = f"DELETE FROM vocabulary WHERE id = {id}"
+        self.mycursor.execute(sql)
+        self.mydb.commit()
+    def reset_id(self):
+        # Tắt AUTO_INCREMENT
+        self.mycursor.execute('ALTER TABLE vocabulary MODIFY COLUMN id INT')
+        # Cập nhật lại giá trị ID
+        self.mycursor.execute('SET @new_id := 0')
+        self.mycursor.execute('UPDATE vocabulary SET id = (@new_id := @new_id + 1) ORDER BY id')
+        # Bật lại AUTO_INCREMENT
+        self.mycursor.execute('ALTER TABLE vocabulary MODIFY COLUMN id INT AUTO_INCREMENT')
+        self.mydb.commit()
+    def edit(self,id,viet_edit):
+        self.mycursor.execute(f"UPDATE vocabulary SET vietnamses = {viet_edit} WHERE id = {id}")
+        self.mydb.commit()
+# import mysql.connector
 
+# mydb = mysql.connector.connect(
+#     host='localhost',
+#     user='root',
+#     passwd='123456789',
+#     database='vocabularydb'
+# )
 
+# mycursor = mydb.cursor()
+
+# # Sắp xếp dữ liệu theo ID
+# mycursor.execute('SELECT * FROM vocabulary ORDER BY id')
+# data = mycursor.fetchall()
+
+# # Cập nhật lại trường ID
+# new_id = 1
+# for row in data:
+#     sql = f"UPDATE vocabulary SET id = {new_id} WHERE id = {row[2]}"
+#     mycursor.execute(sql)
+#     new_id += 1
+
+# mydb.commit()
+    # def upgrade(self,id)
 # mydb = mysql.connector.connect(
 #                 host = 'localhost',
 #                 user = 'root',
@@ -59,7 +82,8 @@ class MySQL():
 
 
 # mydb = MySQL()
-# myresult = mydb.get_data()
+# myresult = mydb.add('global boiling','sự nóng lên toàn cầu')
+# print(myresult)
 # random.shuffle(myresult)
 # print(type(myresult))
 
@@ -84,7 +108,19 @@ class MySQL():
 
 
 
+# data = pandas.read_csv('data.csv')
+# get data in row
+# to_learn = data.to_dict(orient='records')
 
+
+#____________GET DATA________
+# all_words = []
+
+# tuple_list = []
+
+# for num in range(len(to_learn)):
+#     tuple_list = (to_learn[num]['English'], to_learn[num]['Tiếng Việt'])
+#     all_words.append(tuple_list)
 
 
 

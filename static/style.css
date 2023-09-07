@@ -17,8 +17,18 @@ body{
     padding: 100px;
     border-radius: 10px;
 }
-
+.table{
+    margin-top: 2%;
+    border-style: solid;
+    border-color: black;
+}
 /* Font */
+.messageCorrect{
+    color: green;
+}
+.messageWrong{
+    color: red;
+}
 h3{
     font-family: 'Playfair Display', serif;
     
@@ -31,7 +41,14 @@ h2{
     padding-bottom: 2%;
 
 }
-
+p{
+    font-family: 'Playfair Display', serif;
+}
+a{
+    color:black;
+    background-color: transparent;
+    text-decoration: none;
+}
 /* button */
 
 .btn{
@@ -55,4 +72,11 @@ h2{
 .form-control{
     margin: 1% 0;
    
+}
+
+
+#wordsToTranslate,
+#showAnswer,
+#number {
+  transition: opacity 0.3s ease-in-out; 
 }

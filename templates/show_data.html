@@ -1,0 +1,38 @@
+{% extends 'base.html'%}
+{% block content %}
+{% for message in get_flashed_messages() %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+{% endfor %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <h3>
+                <th>ID</th>
+                <th>English</th>
+                <th>Vietnamese</th>
+                <th>Actions</th>
+            </h3>
+        </tr>
+    </thead>
+    <tbody>
+        {% for vocabulary in all_vocabulary %}
+        <tr>
+            <h3>
+                <td>{{vocabulary[2]}}</td>
+                <td>{{vocabulary[0]}}</td>
+                <td>{{vocabulary[1]}}</td>
+            </h3>
+            
+            <td>
+                <a href="{{url_for('edit',id = vocabulary[2])}}" class="edit" title="" data-toggle="tooltip" data-original-title="Edit"><i class="fa-solid fa-pen "></i></a>
+                <a href="{{url_for('delete', id = vocabulary[2])}}" class="delete" title="" data-toggle="tooltip" data-original-title="Delete"><i class="fa-solid fa-trash "></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+

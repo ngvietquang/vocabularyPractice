@@ -1,15 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% for message in get_flashed_messages() %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+{% endfor %}
 <div class="container-add">
     <h2>Add Vocabulary</h2>
-    <form action="">
+    <form action="/add" method="post">
         <div class="form-group">
+            {{ form.csrf_token }}
             <label><h3>Tiếng Anh:</h3></label>
-            <input class="form-control" id="tienganh" >
+            {{form.eng(class='form-control')}}
             <label><h3>Tiếng Việt:</h3></label>
-            <input class="form-control" id="tiengviet">
-            <button type="button" class="btn1 btn-outline-primary btn-lg">Add</button>
+            {{form.viet(class='form-control')}}
+            {{form.submit(class="btn1 btn-outline-primary btn-lg")}}
         </div>
         
     </form>

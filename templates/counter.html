@@ -3,12 +3,14 @@
 {% block content %}
 <div class="container-add">
     <div>
-        <form action="">
+        <form action="/revision", method="post">
             <div class="form-group">
+                {{ formCount.csrf_token }}
                 <h3>From Number: </h3>
-                <input type="text" class="form-control">
+                {{formCount.fromNum(class="form-control") }}
                 <h3>To Number: </h3>
-                <input type="text" class="form-control">
+                {{formCount.toNum(class="form-control") }}
+                {{formCount.submit(class="btn1 btn-outline-primary btn-lg")}}
             </div>
         </form>
     </div>

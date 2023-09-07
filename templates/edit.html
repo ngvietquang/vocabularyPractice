@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<form action="/edit" method="post">  
+    <div class="container-add">
+        {{form.viet_edit(class='form-control')}}
+        {{form.submit_edit(class="btn1 btn-outline-primary btn-lg")}}
+    </div>
+</form>
+{% endblock %}

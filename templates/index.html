@@ -1,45 +1,125 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
 {% block content %}
 <div class="container">
-    <h3 >COUNTDOWN: </h3>
+    <h3>COUNTDOWN:</h3>
     <h3 id="number"></h3>
-    <h3 id = 'wordsToTranslate'></h3>
-    <button type="button" class="btn btn-outline-secondary">Reading <i class="fa-solid fa-volume-high"></i></button>
-    <form action="">
-      <div class="form-group row" >
-        <div class="col-sm-12">
-          <input class="form-input form-control " >
+    <h3 id="wordsToTranslate"></h3>
+    <button id="speakButton" type="button" class="btn btn-outline-secondary">Reading <i
+            class="fa-solid fa-volume-high"></i></button>
+    <form action="/" method="post">
+        <div class="form-group row">
+            <div class="col-sm-12">
+                <input type="text" id ='userAnswer' class='form-input form-control'>
+                <p id="showAnswer"></p>
+            </div>
         </div>
-      </div>
-      <button type="button" id ='next' class="btn btn-outline-success btn-lg">Next</button>
-      <button type="button" id='check' class="btn btn-outline-info btn-lg">Check</button>
+        <button type="button" id="next" class="btn btn-outline-success btn-lg">Next</button>
+        <button type="button" id="check" class="btn btn-outline-primary btn-lg">Check</button>
     </form>
-    <script >
-      // CountDown
-      const number= 20
-      let count = number
-      function countdown(){
+</div>
+<script>
+    // __________Count Down_________
+    const number = 20
+    let interval
+    let count
+    let  userAnswerField = document.getElementById('userAnswer')
+    function countDownTimer(){
+        count = number
+        function countdown(){
           document.getElementById('number').innerHTML = count
           count--
           if (count < 0){
-              clearInterval(interval)
-          }
-      }
+            clearInterval(interval) 
+            document.getElementById('showAnswer').classList.remove('messageCorrect')
+            document.getElementById('showAnswer').innerHTML = englishWord     
+            document.getElementById('showAnswer').classList.add("messageWrong")
+            }
+        }
+      clearInterval(interval)
       countdown()
-      const interval = setInterval(countdown,1000)
+      interval = setInterval(countdown,1000)
+    }
 
+    // ____________Next Vocabulary_______________
+    let all_vocabulary = JSON.parse('{{ all_vocabulary | tojson | safe }}')
+    let englishWord
+    let vietnamWord
+    let id 
+    function nextWord() {
+        userAnswerField.value = ''
+        let num_limit = all_vocabulary.length
+        let random_num = Math.floor(Math.random() * num_limit)
 
-      // NEXT WORD
-      function nextWord(){
-        let englishWord = "{{current_english_word}}"
-        let vietnamWord = '{{current_vietnam_word}}'
-
+        englishWord = all_vocabulary[random_num][0]
+        vietnamWord = all_vocabulary[random_num][1]
+        id = all_vocabulary[random_num][2]
+        console.log(englishWord)
+        console.log(vietnamWord)
         document.getElementById('wordsToTranslate').innerHTML = vietnamWord
-      }
-      
-      let nextButton = document.getElementById('next')
-      nextButton.addEventListener('click',function(){
+        document.getElementById('showAnswer').innerHTML = ''
+    }
+// ________________Check Answer_______________
+    function checkAnswer(userAnswer) {
+        if (userAnswer == englishWord) {
+            document.getElementById('showAnswer').classList.remove('messageWrong')
+            document.getElementById('showAnswer').innerHTML = 'Correct !!'
+            document.getElementById('showAnswer').classList.add('messageCorrect')
+            userAnswerField.value = ''
+            setTimeout(function () {
+                document.getElementById('showAnswer').innerHTML = ''
+                nextWord()
+                countDownTimer()
+            }, 1000);
+        } else {
+            document.getElementById('showAnswer').classList.remove('messageCorrect')
+            document.getElementById('showAnswer').innerHTML = 'Wrong !!'
+            document.getElementById('showAnswer').classList.add('messageWrong')
+            setTimeout(function () {
+                document.getElementById('showAnswer').innerHTML = ''
+            }, 1000);
+        }
+    }
+// ______________Check Button_______________
+    let checkButton = document.getElementById('check')
+    checkButton.addEventListener('click', function () { //Click Check Button
+        let userAnswer = userAnswerField.value
+        checkAnswer(userAnswer)
+    })
+    userAnswerField.addEventListener('keypress', function (event) { // Press Enter Check Button
+        if (event.key === 'Enter'){
+            event.preventDefault()
+            let userAnswer = userAnswerField.value
+            checkAnswer(userAnswer) 
+        }
+        
+    })
+// _____________________Speaker Button_______________
+    let speakButton = document.getElementById('speakButton')
+    speakButton.addEventListener('click', function () {
+        let speech = new SpeechSynthesisUtterance(englishWord)
+        speech.lang = 'en-US'
+        speechSynthesis.speak(speech)
+    })
+
+    document.addEventListener('keydown', function(event) {
+    if (event.altKey && event.key === 's') {
+        let speech = new SpeechSynthesisUtterance(englishWord)
+        speech.lang = 'en-US'
+        speechSynthesis.speak(speech)
+    }
+})
+
+// ___________________Next Vocabulary When Loading Web_____________
+    document.addEventListener('DOMContentLoaded', function () {
+        countDownTimer()
+        nextWord()     
+    })
+    
+// ___________________Next Button________________
+    let nextButton = document.getElementById('next')
+    nextButton.addEventListener('click', function () {
+        countDownTimer()
         nextWord()
-      })
-  </script>
+    })
+</script>
 {% endblock %}
