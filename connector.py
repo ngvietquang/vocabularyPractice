@@ -1,9 +1,5 @@
 import mysql.connector
-import pandas, json
-import random
-import os
-from dotenv import load_dotenv
-load_dotenv()
+
 # ________ MySQL Connector_____
 class MySQL():
     def __init__(self):
