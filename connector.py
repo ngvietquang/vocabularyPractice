@@ -8,10 +8,10 @@ load_dotenv()
 class MySQL():
     def __init__(self):
         self.mydb = mysql.connector.connect(
-            host=os.getenv('DB_HOST'),
-            user=os.getenv('DB_USER'),
-            passwd=os.getenv('DB_PASSWORD'),
-            database=os.getenv('DB_NAME'),
+            host='sql12.freesqldatabase.com',
+            user='sql12803483',
+            passwd='VD3stvsflT',
+            database='sql12803483',
         )
         self.mycursor = self.mydb.cursor()
     # Return Value As Tuple
