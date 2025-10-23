@@ -7,6 +7,7 @@ import random
 app = Flask(__name__)
 mydb = MySQL()
 app.config['SECRET_KEY'] = 'aD1Cas'
+
 class FormEdit(FlaskForm):
     viet_edit = StringField(validators=[DataRequired()])
     submit_edit = SubmitField(label='Submit',validators=[DataRequired()])
@@ -18,6 +19,8 @@ class FormAdd(FlaskForm):
     eng = StringField(validators=[DataRequired()]) 
     viet = StringField(validators=[DataRequired()])
     submit = SubmitField(label='Submit',validators=[DataRequired()])
+
+
 @app.route('/',methods = ['POST','GET'])
 def home():
     all_vocabulary = mydb.get_data()

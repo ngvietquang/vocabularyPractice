@@ -50,9 +50,9 @@
         let num_limit = all_vocabulary.length
         let random_num = Math.floor(Math.random() * num_limit)
 
-        englishWord = all_vocabulary[random_num][0]
-        vietnamWord = all_vocabulary[random_num][1]
-        id = all_vocabulary[random_num][2]
+        englishWord = all_vocabulary[random_num][1]
+        vietnamWord = all_vocabulary[random_num][2]
+        id = all_vocabulary[random_num][0]
         console.log(englishWord)
         console.log(vietnamWord)
         document.getElementById('wordsToTranslate').innerHTML = vietnamWord

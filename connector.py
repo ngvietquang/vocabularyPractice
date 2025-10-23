@@ -1,46 +1,53 @@
 import mysql.connector
 import pandas, json
 import random
+import os
+from dotenv import load_dotenv
+load_dotenv()
 # ________ MySQL Connector_____
 class MySQL():
     def __init__(self):
         self.mydb = mysql.connector.connect(
-                host = 'localhost',
-                user = 'root',
-                passwd = '123456789',
-                database = 'vocabularydb'
-            )
+            host=os.getenv('DB_HOST'),
+            user=os.getenv('DB_USER'),
+            passwd=os.getenv('DB_PASSWORD'),
+            database=os.getenv('DB_NAME'),
+        )
         self.mycursor = self.mydb.cursor()
     # Return Value As Tuple
     def get_data(self):
-        self.mycursor.execute('SELECT * FROM vocabulary')
+        self.mycursor.execute('SELECT * FROM Vocabulary')
         my_result = self.mycursor.fetchall()
         return my_result
     def data_condition(self,fromNum,toNum):
-        self.mycursor.execute(f'SELECT * FROM vocabulary WHERE id BETWEEN {fromNum} AND {toNum}')
+        self.mycursor.execute(f'SELECT * FROM Vocabulary WHERE id BETWEEN {fromNum} AND {toNum}')
         my_result = self.mycursor.fetchall()
         return my_result    
     def add(self,eng,viet):
-        sql = "INSERT INTO vocabulary (english,vietnamses) VALUES (%s,%s)"
+        sql = "INSERT INTO Vocabulary (English, Vietnamese) VALUES (%s,%s)"
         val = (eng,viet)
         self.mycursor.execute(sql,val)
         self.mydb.commit()
     def delete(self,id):
-        sql = f"DELETE FROM vocabulary WHERE id = {id}"
+        sql = f"DELETE FROM Vocabulary WHERE id = {id}"
         self.mycursor.execute(sql)
         self.mydb.commit()
     def reset_id(self):
         # Tắt AUTO_INCREMENT
-        self.mycursor.execute('ALTER TABLE vocabulary MODIFY COLUMN id INT')
+        self.mycursor.execute('ALTER TABLE Vocabulary MODIFY COLUMN id INT')
         # Cập nhật lại giá trị ID
         self.mycursor.execute('SET @new_id := 0')
-        self.mycursor.execute('UPDATE vocabulary SET id = (@new_id := @new_id + 1) ORDER BY id')
+        self.mycursor.execute('UPDATE Vocabulary SET id = (@new_id := @new_id + 1) ORDER BY id')
         # Bật lại AUTO_INCREMENT
-        self.mycursor.execute('ALTER TABLE vocabulary MODIFY COLUMN id INT AUTO_INCREMENT')
+        self.mycursor.execute('ALTER TABLE Vocabulary MODIFY COLUMN id INT AUTO_INCREMENT')
         self.mydb.commit()
     def edit(self,id,viet_edit):
-        self.mycursor.execute(f"UPDATE vocabulary SET vietnamses = {viet_edit} WHERE id = {id}")
+        self.mycursor.execute(f"UPDATE Vocabulary SET Vietnamese = {viet_edit} WHERE id = {id}")
         self.mydb.commit()
+    def clear(self):
+            self.mycursor.execute("TRUNCATE TABLE Vocabulary")
+            self.mydb.commit()
+            print("✅ Đã xóa toàn bộ dữ liệu trong table Vocabulary")
 # import mysql.connector
 
 # mydb = mysql.connector.connect(
