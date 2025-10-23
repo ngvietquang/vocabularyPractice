@@ -1,0 +1,7 @@
+Flask==2.3.3
+Flask-WTF==1.1.1
+WTForms==3.0.1
+mysql-connector-python==8.1.0
+pandas==2.0.3
+python-dotenv==1.0.0
+Werkzeug==2.3.7
