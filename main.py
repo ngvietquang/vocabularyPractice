@@ -4,6 +4,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField , SubmitField , IntegerField
 from wtforms.validators import DataRequired
 import random
+import os
+import csv
 app = Flask(__name__)
 mydb = MySQL()
 app.config['SECRET_KEY'] = 'aD1Cas'
@@ -35,16 +37,26 @@ def add():
     if form.validate_on_submit():
         eng = form.eng.data.lower()
         viet = form.viet.data.lower()
-        form.eng.data =''
-        form.viet.data=''
-        print(form.errors)
+        csv_file = 'vocabularyPractice\data.csv'
+        file_exists = os.path.isfile(csv_file)
+        
+        with open(csv_file, 'a', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            
+            # Nếu file chưa tồn tại, thêm header
+            if not file_exists:
+                writer.writerow(['English', 'Tiếng Việt'])
+            
+            # Thêm dữ liệu mới
+            writer.writerow([eng, viet])
+        
+        form.eng.data = ''
+        form.viet.data = ''
         mydb.add(eng=eng,viet=viet)
         flash('Vocabulary Added Successfully!!')
-        return render_template('add.html',
-                           form=form)
-    return render_template('add.html',
-                           form=form)
-
+        return render_template('add.html', form=form)
+    
+    return render_template('add.html', form=form)
 @app.route('/revision',methods=['GET','POST'])
 def revision():
 
