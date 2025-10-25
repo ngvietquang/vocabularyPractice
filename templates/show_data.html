@@ -21,14 +21,14 @@
         {% for vocabulary in all_vocabulary %}
         <tr>
             <h3>
-                <td>{{vocabulary[2]}}</td>
                 <td>{{vocabulary[0]}}</td>
                 <td>{{vocabulary[1]}}</td>
+                <td>{{vocabulary[2]}}</td>
             </h3>
             
             <td>
-                <a href="{{url_for('edit',id = vocabulary[2])}}" class="edit" title="" data-toggle="tooltip" data-original-title="Edit"><i class="fa-solid fa-pen "></i></a>
-                <a href="{{url_for('delete', id = vocabulary[2])}}" class="delete" title="" data-toggle="tooltip" data-original-title="Delete"><i class="fa-solid fa-trash "></i></a>
+                <a href="{{url_for('edit',id = vocabulary[0])}}" class="edit" title="" data-toggle="tooltip" data-original-title="Edit"><i class="fa-solid fa-pen "></i></a>
+                <a href="{{url_for('delete', id = vocabulary[0])}}" class="delete" title="" data-toggle="tooltip" data-original-title="Delete"><i class="fa-solid fa-trash "></i></a>
             </td>
         </tr>
         {% endfor %}
