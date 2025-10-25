@@ -22,7 +22,7 @@
     const number = 20
     let interval
     let count
-    let  userAnswerField = document.getElementById('userAnswer').lowerCase()
+    let  userAnswerField = document.getElementById('userAnswer')
     function countDownTimer(){
         count = number
         function countdown(){
@@ -82,7 +82,7 @@
 // ______________Check Button_______________
     let checkButton = document.getElementById('check')
     checkButton.addEventListener('click', function () { //Click Check Button
-        let userAnswer = userAnswerField.value
+        let userAnswer = userAnswerField.value.toLowerCase()
         checkAnswer(userAnswer)
     })
     userAnswerField.addEventListener('keypress', function (event) { // Press Enter Check Button
